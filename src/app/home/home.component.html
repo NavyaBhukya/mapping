@@ -1,0 +1,62 @@
+<div class="container">
+    <nav class="nav-bar">
+        <div class="icon-container">
+            <i class="fa-solid fa-bars"></i>
+            <i class="fa-regular fa-bookmark"></i>
+            <i class="fa-solid fa-clock-rotate-left"></i>
+        </div>
+        <div>
+            <h1>Home</h1>
+        </div>
+    </nav>
+    <div class="map-container">
+        <div class="side-nav">
+            <div class="sidenav-data" style="background-color: rgb(28, 45, 83); color: white;"
+                *ngFor="let location of defaultLocations">
+                <div>
+                    <p>name : {{location.name}}</p>
+                    <p>latitude : {{location.location.lat}}</p>
+                    <p>longitude : {{location.location.lng}}</p>
+                </div>
+            </div>
+            <div class="button">
+                <p-button (click)="showDialog('bottom')" icon="pi pi-plus" label="Add New"
+                    styleClass="p-button-success"></p-button>
+            </div>
+        </div>
+        <p-dialog header="Header" [(visible)]="visible" [(visible)]="displayPosition" [position]="position" id="dialog-form"
+            [style]="{ width: '25vw' }">
+            <form action="" [formGroup]="infoForm" (ngSubmit)="submitValues()">
+                <label for="city"> City Name </label>
+                <input type="text" class="form-control" placeholder="Enter City name" formControlName="city">
+                <div>
+                    <label for="city"> Latitude : </label>
+                    <input type="number" class="form-control" placeholder="Enter Latitude" formControlName="lat">
+                </div>
+                <div>
+                    <label for="city">Longitude : </label>
+                    <input type="number" class="form-control" placeholder="Enter Longitude" formControlName="lng">
+                </div>
+                <div>
+                    <label for="city">Tooltip : </label>
+                    <input type="text" class="form-control" placeholder="Enter Tooltip" formControlName="tooltip">
+                </div>
+                <div class="text-center m-3 btn-container">
+                    <button class="btn1 btn-success" [disabled]="infoForm.invalid" type="submit" >Submit</button>
+                </div>
+            </form>
+            <button class="btn2" (click)="onCloseDailog()">cancel</button>
+      </p-dialog>
+        <div class="map" id="map" #mapContainer>
+            <google-map height="450px" width="1100px" [center]="center" [zoom]="zoom" (mapMousemove)="move($event)"
+                (mapClick)="addMarker($event)">
+                <map-marker #marker="mapMarker" *ngFor="let markerPosition of markerPositions"
+                    [position]="markerPosition" [options]="markerOptions"></map-marker>
+                <map-info-window>Its shows tooltip</map-info-window>
+            </google-map>
+            <div>Latitude: {{display?.lat}}</div>
+            <div>Longitude: {{display?.lng}}</div>
+        </div>
+    </div>
+</div>
+<app-footer></app-footer>
